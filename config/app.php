@@ -123,6 +123,10 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'youtube_api_key' => env('YOUTUBE_API_KEY'),
+
+    'youtube_url' => env('YOUTUBE_URL'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
