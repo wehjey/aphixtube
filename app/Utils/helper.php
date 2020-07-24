@@ -18,36 +18,42 @@ function makeRequest($url, $method, $data = [])
     $curl = curl_init();
 
     $headers = [
-        "content-type: application/json",
-        "cache-control: no-cache"
+        "Accept: application/json"
     ];
 
-    curl_setopt_array(
-        $curl,
-        array(
+    $options = [
         CURLOPT_URL => $url,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => $method,
-        CURLOPT_POSTFIELDS => json_encode($data),
         CURLOPT_HTTPHEADER => $headers,
-        )
+    ];
+
+    if ($data) {
+        array_push(
+            $options, [
+                CURLOPT_POSTFIELDS => json_encode($data)
+            ]
+        );
+    }
+
+    curl_setopt_array(
+        $curl,
+        $options
     );
 
     $response = curl_exec($curl);
     $err = curl_error($curl);
 
-    $result = [];
-
     if (!$err) {
         $result = [
-          'status' => true,
-          'data' => json_decode($response, true)
+            'success' => true,
+            'data' => json_decode($response, true)
         ];
     } else {
         $result = [
-          'status' => false,
-          'data' => null,
-          'error' => $err
+            'success' => false,
+            'data' => null,
+            'error' => $err
         ];
     }
 
