@@ -25,7 +25,7 @@ class YoutubeController extends Controller
         $requestUrl = "{$baseUrl}/search?key={$apiKey}&part=snippet&maxResults={$this->_MAX_RESULTS}";
 
         if (request()->has('query') && request('query') != '') {
-            $requestUrl .= "&q={$request['query']}";
+            $requestUrl .= '&q=' . urlencode($request['query']);
         }
 
         if (request()->has('pageToken') && request('pageToken') != '') {
