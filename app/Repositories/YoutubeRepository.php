@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
-class YoutubeRepository
+use App\Repositories\Interfaces\YoutubeRepositoryInterface;
+
+class YoutubeRepository implements YoutubeRepositoryInterface
 {
 
     private $_MAX_RESULTS = 12; // Default number of results
