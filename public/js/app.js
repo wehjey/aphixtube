@@ -1,6 +1,9 @@
-let keyword;
+let keyword; // search keyword
 
 $(document).ready(function () {
+
+    // Load default search list
+
     keyword = 'aphix erp'
     let url = baseUrl + "/search?query=" + keyword
 
@@ -16,31 +19,35 @@ $("#submitBtn").click(function (e) {
     loadVideos(url)
 });
 
+/**
+ * Function to call search endpoint to load videos
+ * 
+ * @param {string} url 
+ */
 function loadVideos(url) {
-    $.get(url, function (data, status) {
+    $.get(url, function (data) {
 
-        $('#alert').addClass('d-none')
+        $('#alert').addClass('d-none') // hide no results alert from page
 
         if (data.success && data.data) {
-
             enablePagination(data.data)
 
             let results = data.data.items
 
             if (results) {
                 $('#videoContainer').html('') // Clear out previous items
-                results.forEach(buildItems)
+                results.forEach(buildItems) // display search results
             }
-
         } else {
-            $('#alert').removeClass('d-none')
+            $('#alert').removeClass('d-none') // show no results alert on page
         }
-
     });
 }
 
+/**
+ * Show next or previous page with available page token
+ */
 $(".page-link").on("click", function () {
-
     var token = $(this).attr("data-token");
 
     if (token == '#') {
@@ -52,8 +59,8 @@ $(".page-link").on("click", function () {
     loadVideos(url)
 });
 
+// Add pageToken to appropriate pagination button
 function enablePagination(data) {
-
     if (data.nextPageToken !== undefined) {
         $('#nextPage').attr('data-token', data.nextPageToken)
     }
@@ -61,11 +68,10 @@ function enablePagination(data) {
     if (data.prevPageToken !== undefined) {
         $('#prevPage').attr('data-token', data.prevPageToken)
     }
-
 }
 
 // Build html to show youtube search listing
-function buildItems(item, index) {
+function buildItems(item) {
 
     if (item.id.kind == 'youtube#channel') {
         $('#videoContainer').append(
